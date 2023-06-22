@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    # environment:
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: th4n0s
+    ports:
+      - 27017:27017
+    volumes:
+      - db-mongo:/data/db
+      - config-db-mongo:/data/configdb
+
+volumes:
+  db-mongo:
+  config-db-mongo:
