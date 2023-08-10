@@ -1,8 +1,8 @@
 import { AbstractRepository } from '@app/common/database/abstract.repository';
 import { Injectable, Logger } from '@nestjs/common';
 import { ReservationDocument } from './models/reservation.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model } from 'mongoose';
 
 @Injectable()
 export class ReservationsRepository extends AbstractRepository<ReservationDocument> {
@@ -11,7 +11,9 @@ export class ReservationsRepository extends AbstractRepository<ReservationDocume
   constructor(
     @InjectModel(ReservationDocument.name)
     resevationModel: Model<ReservationDocument>,
+    @InjectConnection()
+    connection: Connection,
   ) {
-    super(resevationModel);
+    super(resevationModel, connection);
   }
 }

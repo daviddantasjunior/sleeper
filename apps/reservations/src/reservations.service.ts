@@ -9,12 +9,25 @@ export class ReservationsService {
     private readonly reservationsRepository: ReservationsRepository,
   ) {}
 
-  create(createReservationDto: CreateReservationDto) {
-    return this.reservationsRepository.create({
-      ...createReservationDto,
-      timestamp: new Date(),
-      userId: '123',
-    });
+  async create(createReservationDto: CreateReservationDto) {
+    const session = await this.reservationsRepository.startTransaction();
+    try {
+      const reservation = await this.reservationsRepository.create(
+        {
+          ...createReservationDto,
+          timestamp: new Date(),
+          userId: '123',
+        },
+        { session },
+      );
+      // TODO Add RabbitMQ
+      await session.commitTransaction();
+
+      return reservation;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    }
   }
 
   findAll() {
