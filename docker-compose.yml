@@ -17,6 +17,22 @@ services:
     volumes:
       - .:/usr/src/app
 
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+
+
   mongodb-primary:
     image: docker.io/bitnami/mongodb:5.0
     environment:
