@@ -71,7 +71,9 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
 
   async startTransaction(): Promise<ClientSession> {
     const session = await this.connection.startSession();
+
     session.startTransaction();
+
     return session;
   }
 }
